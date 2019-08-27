@@ -7,12 +7,14 @@ class Game extends Component {
     super(props);
     this.state = {
       searchGiphy: "",
-      gameCard: []
+      gameCard: new Set(), 
+      loading: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.performSearch = this.performSearch.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.myDivToFocus = React.createRef(this);
+    this.resetGame = this.resetGame.bind(this);
   }
 
   // const url = "https://api.giphy.com/v1/gifs/search?q="
@@ -20,7 +22,6 @@ class Game extends Component {
   // const apiKey = "&api_key=39a3e436bae449eebf5904e0af9ad67c&limit=8";
   jumpto(evt) {
     //.current is verification that your element has rendered
-    //document.querySelector('main-game');
     if (this.myDivToFocus.current) {
       this.myDivToFocus.current.scrollIntoView({
         behavior: "smooth",
@@ -29,8 +30,18 @@ class Game extends Component {
     }
 
   }
+  resetGame() {
+    this.setState({
+      searchGiphy: "",
+      gameCard: new Set(),
+      loading: false
+    })
+
+  };
+
 
   handleChange(evt) {
+    console.log(evt)
     this.setState({
       [evt.target.name]: evt.target.value
     });
@@ -38,37 +49,48 @@ class Game extends Component {
   handleSubmit(evt) {
     console.log(evt)
     evt.preventDefault();
-    this.performSearch(evt);
+    this.performSearch();
+    evt.target.reset();
     this.jumpto(evt)
   }
 
 
-  performSearch = (wordSearch = "example") => {
+  async performSearch(wordSearch = "example") {
     console.log(wordSearch)
-    let query = wordSearch;
+    wordSearch = this.state.searchGiphy
     let url = "https://api.giphy.com/v1/gifs/search?q="
-
     let apiKey = "&api_key=39a3e436bae449eebf5904e0af9ad67c&limit=8";
-    axios.get(`${url}${query}${apiKey}`).then(response => {
-      console.log(response);
-      // let results = response.data;
-      // for (let i = 0; i < results.length; i++) {
-      //     let gifObj = {
-      //         url: results[i].images.original.url,
-      //         id: results[i].id,
-      //         pts: 0
-      //     }
+    let urlToFetch = `${url}${wordSearch}${apiKey}`;
+    let gameCard2 = [];
+    try {
+      let responses = await axios.get(urlToFetch);
+      //console.log(responses.data.data);
+      let results = responses.data.data;
+      while (gameCard2.length < results.length) {
+        let gifObj = {
+          url: results[gameCard2.length].images.original.url,
+          id: results[gameCard2.length].id,
+          pts: Math.floor(Math.random() * 12) + 1
+        }
 
-      // console.log(response);
-      // return this.setState({
-      //   gameCard: [].concat(gifObj)
-      // });
+        gameCard2.push(gifObj)
+        console.log(gifObj.pts);
+      }
 
-    }).catch(err => {
-      console.log('Error happened during fetching!', err);
-    });
+      this.setState(st => ({
+        loading: true,
+        gameCard: [...st.gameCard, ...gameCard2]
+      }));
 
-    console.log("clicked clicked BYE");
+      console.log(this.state.gameCard);
+    }//end of try 
+
+    catch (e) {
+      alert(e);
+      this.setState({ loading: false });
+    }
+
+    document.getElementById("giphy-input").value = '';
   };
 
   render() {
@@ -94,7 +116,7 @@ class Game extends Component {
             </div>
           </div>
         </div>
-        <Giphy myDivToFocus={this.myDivToFocus} /> 
+        <Giphy myDivToFocus={this.myDivToFocus} loading={this.state.loading} gameCard={this.state.gameCard} resetGame={this.resetGame}/>
       </div> //end of main-game
 
     )//end of return 
