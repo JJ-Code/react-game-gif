@@ -16,28 +16,30 @@ class Giphy extends Component {
         this.click = this.click.bind(this);
         this.gifCard = this.gifCard.bind(this);
         this.gamePlayHandleClick = this.gamePlayHandleClick.bind(this);
-    
     }
 
     click() {
         console.log(this.props.gameCard[0])
 
     }
-
+    
+    
     win() {
         this.setState(st => ({
             winScore: st.winScore += 1
         }))
+        alert("You win!");
         this.resetGiphy();
-        this.props.restGame();
+        let rest = () => this.props.restGame();
     }
 
     loss() {
         this.setState(st => ({
             lossScore: st.lossScore += 1
         }))
+        alert("You did not win, loser!");
         this.resetGiphy();
-        this.props.restGame
+        let rest = () => this.props.restGame();
     }
 
     resetGiphy() {
