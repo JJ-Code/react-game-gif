@@ -2,7 +2,6 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Footer from "./Footer";
-import Giphy from "./Giphy";
 import Game from "./Game";
 
 function App() {
@@ -23,7 +22,6 @@ function App() {
         </a>
       </header>  */}
       <Game />
-      <Giphy />
       <Footer />
     </div>
   );

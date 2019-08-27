@@ -1,13 +1,27 @@
 import React, { Component } from "react";
-import "./App.css";
+import "./App.css"; 
+import MakeCard from "./MakeCard";
+
 
 
 class Giphy extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { 
+            computerScore: Math.floor(Math.random() * 102) + 19,
+            winScore: 0,
+            lossScore: 0
+        };
 
+    }
+
+    
+
+    //ref = { this.myDivToFocus }
     render() {
 
         return (
-            <div className="container">
+            <div className="container" ref={this.props.myDivToFocus}>
                 <section>
                     <div className="content" id="main-game">
                         <div className="row">
@@ -36,14 +50,16 @@ class Giphy extends Component {
                         {/* <!-- GIF RESULTS GAME--> */}
                         <div className="row">
 
-                            <div id="giphy-view"></div>
+                            <div id="giphy-view">
+                            <MakeCard />
+
+                            </div>
 
                         </div>
 
 
                     </div>
                 </section>
-
             </div>//end of 
 
         )
