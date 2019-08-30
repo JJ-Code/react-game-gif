@@ -22,15 +22,15 @@ class Giphy extends Component {
         console.log(this.props.gameCard[0])
 
     }
-    
-    
+
+
     win() {
         this.setState(st => ({
             winScore: st.winScore += 1
         }))
         alert("You win!");
         this.resetGiphy();
-        let rest = () => this.props.restGame();
+        return () => this.props.restGame();
     }
 
     loss() {
@@ -39,7 +39,7 @@ class Giphy extends Component {
         }))
         alert("You did not win, loser!");
         this.resetGiphy();
-        let rest = () => this.props.restGame();
+        return () => this.props.restGame();
     }
 
     resetGiphy() {
@@ -74,7 +74,7 @@ class Giphy extends Component {
         this.setState(st => ({
             userScore: st.userScore += this.props.gameCard[foundPic].pts
         }))
-            //(this.state.userScore > this.state.computerScore) ? this.state.loss() : this.state.win();
+        //(this.state.userScore > this.state.computerScore) ? this.state.loss() : this.state.win();
         if (this.state.userScore === this.state.computerScore) {
             this.win();
         } else if (this.state.userScore > this.state.computerScore) {

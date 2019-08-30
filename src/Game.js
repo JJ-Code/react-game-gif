@@ -17,9 +17,6 @@ class Game extends Component {
     this.resetGame = this.resetGame.bind(this);
   }
 
-  // const url = "https://api.giphy.com/v1/gifs/search?q="
-  // const inputField = document.querySelector("#giphy-input");
-  // const apiKey = "&api_key=39a3e436bae449eebf5904e0af9ad67c&limit=8";
   jumpto(evt) {
     //.current is verification that your element has rendered
     if (this.myDivToFocus.current) {
@@ -56,6 +53,7 @@ class Game extends Component {
 
 
   async performSearch(wordSearch = "example") {
+    this.resetGame();
     console.log(wordSearch)
     wordSearch = this.state.searchGiphy
     let url = "https://api.giphy.com/v1/gifs/search?q="
