@@ -119,7 +119,6 @@ class Giphy extends Component {
                             <div id="giphy-view">
                                 {(this.props.loading === false) ? <h2>Loading...</h2> : this.gifCard()}
 
-
                             </div>
 
                         </div>
